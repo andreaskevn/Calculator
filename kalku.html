@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator</title>
+    <style>
+        .hidden { display: none; }
+        .calculator { margin-top: 20px; }
+        #login-message { color: red; }
+        button { margin: 5px; padding: 10px; }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        #calc-display {
+            grid-column: span 4;
+            height: 40px;
+            text-align: right;
+            font-size: 1.5em;
+        }
+        #clear-button {
+            grid-column: span 4;
+        }
+        #equal-button {
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+    <div id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username"><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password"><br>
+        <button id="login-button">Login</button>
+        <p id="login-message"></p>
+    </div>
+
+    <div id="calculator" class="hidden">
+        <h1>Kalkulator</h1>
+        <div class="grid-container">
+            <input type="text" id="calc-display" disabled>
+            <button id="clear-button">CLEAR</button>
+            <button class="calc-button" data-value="7">7</button>
+            <button class="calc-button" data-value="8">8</button>
+            <button class="calc-button" data-value="9">9</button>
+            <button class="calc-button" data-value="+">+</button>
+            <button class="calc-button" data-value="4">4</button>
+            <button class="calc-button" data-value="5">5</button>
+            <button class="calc-button" data-value="6">6</button>
+            <button class="calc-button" data-value="-">-</button>
+            <button class="calc-button" data-value="1">1</button>
+            <button class="calc-button" data-value="2">2</button>
+            <button class="calc-button" data-value="3">3</button>
+            <button class="calc-button" data-value="*">*</button>
+            <button class="calc-button" data-value="0">0</button>
+            <button class="calc-button" data-value="/">/</button>
+            <button id="equal-button">=</button>
+        </div>
+    </div>
+
+    <script>
+        const loginButton = document.getElementById("login-button");
+        const loginMessage = document.getElementById("login-message");
+        const loginForm = document.getElementById("login-form");
+        const calculator = document.getElementById("calculator");
+        const calcDisplay = document.getElementById("calc-display");
+
+        loginButton.addEventListener("click", () => {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            
+            if (username === "andreas" && password === "11737") {
+                loginMessage.textContent = "Login successful!";
+                loginForm.classList.add("hidden");
+                calculator.classList.remove("hidden");
+            } else {
+                loginMessage.textContent = "Incorrect username or password";
+            }
+        });
+
+        const calcButtons = document.querySelectorAll(".calc-button");
+        let currentInput = "";
+
+        calcButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                currentInput += button.getAttribute("data-value");
+                calcDisplay.value = currentInput;
+            });
+        });
+
+        document.getElementById("clear-button").addEventListener("click", () => {
+            currentInput = "";
+            calcDisplay.value = currentInput;
+        });
+
+        document.getElementById("equal-button").addEventListener("click", () => {
+            try {
+                currentInput = eval(currentInput).toString();
+                calcDisplay.value = currentInput;
+            } catch (e) {
+                calcDisplay.value = "Error";
+            }
+        });
+    </script>
+</body>
+</html>
